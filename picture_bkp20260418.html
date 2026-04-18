@@ -15,12 +15,11 @@
     {% thumbnail instance.picture "992x0" as medium %}
     {% thumbnail instance.picture "1600x0" as large %}
 
-<div class="cms-picture-background {{ instance.background_attachment }}"
-     style="background-image:url('{{ small.url }}');"
-     data-bg-medium="{{ medium.url }}"
-     data-bg-large="{{ large.url }}"
-     {% if instance.attributes_str %}{{ instance.attributes_str }}{% endif %}>
-
+    <div class="cms-picture-background"
+         style="width:100%; min-height:400px; position:relative; background-image:url('{{ small.url }}');"
+         data-bg-medium="{{ medium.url }}"
+         data-bg-large="{{ large.url }}"
+         {% if instance.attributes_str %}{{ instance.attributes_str }}{% endif %}>
         <div class="cms-picture-overlay"></div>
         <div class="cms-picture-content">
             {% for plugin in instance.child_plugin_instances %}
@@ -59,30 +58,7 @@
 {# Responsive JS for switching background images #}
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    
-    const backgrounds = document.querySelectorAll('.cms-picture-background');
-    backgrounds.forEach(bg => {
-        const width = window.innerWidth;
-
-        const apply = () => {
-            if (width >= 993 && bg.dataset.bgLarge) {
-                bg.style.backgroundImage = `url(${bg.dataset.bgLarge})`;
-            } else if (width >= 577 && bg.dataset.bgMedium) {
-                bg.style.backgroundImage = `url(${bg.dataset.bgMedium})`;
-            }
-        };
-
-        apply();
-
-        window.addEventListener('resize', function () {
-            const w = window.innerWidth;
-            if (w >= 993 && bg.dataset.bgLarge) {
-                bg.style.backgroundImage = `url(${bg.dataset.bgLarge})`;
-            } else if (w >= 577 && bg.dataset.bgMedium) {
-                bg.style.backgroundImage = `url(${bg.dataset.bgMedium})`;
-            }
-         });
-    });
+    const bg = document.querySelector('.cms-picture-background');
     if (!bg) return;
 
     const width = window.innerWidth;
